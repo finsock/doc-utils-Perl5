@@ -1,0 +1,1 @@
+prove -l t\01_pbar.t
