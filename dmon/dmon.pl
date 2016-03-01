@@ -3,18 +3,17 @@
 #  Directory Monitor (MS Windows)
 
 #''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-#  Filename	 : dmon.pl 
+#  Filename	     : dmon.pl 
 #  Create date   : 06.09.2015
 #  Author        : Csaba Gaspar <cgaspar AT finsock DOT com> 
 #  Description   : Reports files with specific filename convention when uploaded to a particular directory.
 #                    
-#  Requires	 : Perl language support
+#  Requires	     : Perl language support, Win32 module, GetOpt::Std module
 #
 #''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 #  Usage         : dmon.pl -r regex -d "directory"
 #
-#		   Where:
-# 
+#  Where         :
 #                  	"-r" command line option expects a regex to specify a file name convention 
 #	                "-d" command line option expects a path to the directory to be monitored
 #   
