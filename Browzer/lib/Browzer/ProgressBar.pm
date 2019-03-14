@@ -54,7 +54,8 @@ ProgressBar - A Win32 OLE/IE based progress indicator
 
 The ProgressBar Perl module aims to be a simple browser based tool to visualize the progress of 
 any automated batch processes in a situation, where standard output is not an option for feedback. 
-=head2 Dependency
+
+=head2 Dependency
 
 	- Win32::OLE module
 
@@ -62,10 +63,12 @@ Since the ProgressBar class utilizes the Win32::OLE module, it's theoretically a
 solution, which will primarily work in MS Windows OS environment (using OLE automation 
 on Linux is rare, but not completely unheard of: Wine makes it possible to run Windows programs 
 alongside any Unix-like operating system, and moreover, even MS Office installs on Linux). 
-For mimicking simple Windows GUI functionality, Win32::OLE module offers a lightweight, 
+
+For mimicking simple Windows GUI functionality, Win32::OLE module offers a lightweight, 
 compact design, which lets you avoid robust modules, like Win32::GUI. 
 
-	- HTML::Template
+
+	- HTML::Template
 
 The HTML content of the module interface could be implemented by sending hard-wired HTML code to
 the DHTML document object of the page, as it really means only a few lines, but it is not an elegant 
@@ -83,8 +86,10 @@ You can provide a very simple visual feedback by implementing ProgressBar module
 =head3 How to use the module
 
 1. B<Object declaration>: 
-	my $pbar = ProgressBar->new();
-It's quite easy to create a ProgressBar object from code, because it doesn't take any arguments. 
+
+	my $pbar = ProgressBar->new();
+
+It's quite easy to create a ProgressBar object from code, because it doesn't take any arguments. 
 Its class and object data members are initialized automatically, but some of the object variables 
 can be set through simple object methods.
 
@@ -97,16 +102,19 @@ You'll need to indirectly provide the ProgressBar object with a counter and a pe
 which you may want to declare two numeric literals in the same scope where the ProgressBar object 
 was created. These values drive the state of the ProgressBar object and help refresh the 
 progressbar element of the interface window.
-The counter value represents the factual number of the item beeing processed, thus - for the sake 
+
+The counter value represents the factual number of the item beeing processed, thus - for the sake 
 of simplicity - its assignment works on the assumption that its initial value (prior to the first 
 "update" object method call) is set to 1. Please notice, that this value is initially set to 0 
 in the example in the synopsis, but it's incremented inside the loop before the actual "update" 
 method call.
-If you must use C-style "for" loop for the processing, you need to properly set the loop condition, 
+
+If you must use C-style "for" loop for the processing, you need to properly set the loop condition, 
 as it is highly susceptible to 'off by one' errors. 
 
 3. B<Literal feedback>
-	$pbar->set_titlebar_text( "Photographers" );
+
+	$pbar->set_titlebar_text( "Photographers" );
 	$pbar->set_message_text( $counter . "/" . @pictures . " " . $pic );
 
 The ProgressBar object is prepared to report a generic and a current collection element related message
@@ -119,37 +127,46 @@ specific information below the progressbar you consider important.
 The generic information needs to be set only once outside of the processing loop using the 
 set__titlebar_text() object method, while the element specific information should be updated from
 inside the process loop in each cycle using the set__message_text() object method of the ProgressBar 
-object.4. B<Opening the user interface>
-	$pbar->show();
+object.
+
+4. B<Opening the user interface>
+
+	$pbar->show();
 
 When the ProgressBar object is fully prepared, calling the C<show> object method once from outside the
 processing loop opens up the user simple, browser based interface. Its HTML content will be refreshed
-cycle by cycle from inside the loop.	
+cycle by cycle from inside the loop.	
+
 5. B<Updating the object state>
 
-	$pbar->update($percent);
+	$pbar->update($percent);
+
 The ProgressBar object has to be updated after each iteration from inside your processing loop by calling 
 the "update()" object method. This method has an important argument: the percantage, which represents 
 the current element in the whole collection. Using the following elementery formula, you can calculate this
 value easily and pass it to the object method:
 
 	$percent = int(( 100 * $counter / @pictures ) + 0.5 );
-The @pictures array in the above example is placed into scalar context, hence it represents the size of the 
-array, that is, the total number of elements in your collection. 
+
+The @pictures array in the above example is placed into scalar context, hence it represents the size of the 
+array, that is, the total number of elements in your collection. 
+
 6. B<Closing the user interface>
 
 	$pbar->close();
 	
 The ProgressBar module doesn't really need an explicit destructor method, Perl takes care of the memory 
 for you, but you might need to close the user interface of your ProgressBar object right after the 
-processing loop iterates your entire collection. You can do this by calling the "Close()" object method.
+processing loop iterates your entire collection. You can do this by calling the "Close()" object method.
+
 =head2 Customizing the bar
 
 The cool part of the object is its simple design. The default look of the bar itself aims to be a humble 
 reminiscence of the atavistic progressbars known typically from old text user interfaces of the 1980s and 
 1990s (e.g. Norton Commander). Its building block is a text-based semigraphics (a UTF-8 block element with 
 an HTML entity of &#x2591) called "LIGHT SHADE".
-If you want to customize this default look by changing the face or number of the bar building blocks, you 
+
+If you want to customize this default look by changing the face or number of the bar building blocks, you 
 can actually do it by altering the values of three class data members by changing the parameters of the 
 C<__init_bar> mutator method in the constructor of the ProgressBar class. These data members are:
 
@@ -163,13 +180,15 @@ as CSS value and unit specifications don't relate to physical units. A CSS 'px' 
 an inch, this ratio can be used to finetune the CSS width of the new block element of your choice and, 
 indirectly, the CSS width of the HTML table which accomodates the progress bar (the value applied to a 
 CSS "width" style element of an HTML table in which the bar is embedded).
-Read more: CSS Values and Units Module Level 3: L<http://www.w3.org/TR/css3-values/#reference-pixel> 
+
+Read more: CSS Values and Units Module Level 3: L<http://www.w3.org/TR/css3-values/#reference-pixel> 
 
 These block element values - the face code, total number and CSS unit width - are class data members and act
 as constants, they are accessable only from inside the object and their initial values are set programatically 
 from the object constructor. These initial values need to be altered in the class code for customization, 
 they cannot be applied from your own code.
-=head2 Customizing the interface window
+
+=head2 Customizing the interface window
 
 The position and size of the progress bar interface window can also be set in the object constructor code by 
 changing the parameters of the This simple customization can be achieved by changing some of the arguments of the 
@@ -187,16 +206,19 @@ C<__init_window> mutator method. The values are as follows:
 use 5.014002;
 use strict;
 use warnings;
-use vars qw($VERSION);
+
+use vars qw($VERSION);
 our $VERSION = '0.01';
-use Win32::OLE;
+
+use Win32::OLE;
 use HTML::Template;
 
 Win32::OLE->Option( Warn => 0 );
 
 
 # Class member declarations, mutator and accessor class methods for the progress bar design element.
-{
+
+{
 	
 	my $__BAR_CHAR_FACE  = undef;   # The HTML entity of the block element
 	my $__BAR_CHAR_NUM   = undef;   # The number of block elements (the length) of the entire bar
@@ -208,12 +230,14 @@ Win32::OLE->Option( Warn => 0 );
 	sub __get_bc_num{ $__BAR_CHAR_NUM }
 	sub __get_bc_width{ $__BAR_CHAR_WIDTH }
 	
-}
+}
+
 # Class member declarations, mutator and accessor class methods for the browser window position and size. 
 # The coordinates are relative to the left corner of the screen. 
 
 {
-		my $__WIN_POS_LEFT    = undef;   # The vertical coordinate of the upper left corner of the browser window
+	
+	my $__WIN_POS_LEFT    = undef;   # The vertical coordinate of the upper left corner of the browser window
 	my $__WIN_POS_TOP     = undef;   # The horizontal coordinate of the upper left corner of the browser window
 	my $__WIN_SIZE_WIDTH  = undef;   # The width of the browser window
 	my $__WIN_SIZE_HEIGHT = undef;   # The height of the browser window
@@ -231,7 +255,8 @@ Win32::OLE->Option( Warn => 0 );
 	sub __get_win_size_height{ $__WIN_SIZE_HEIGHT } 
 	sub __get_win_margin{ $__WIN_MARGIN } 
 	
-}
+}
+
 =pod
 
 =head2 new
@@ -246,9 +271,11 @@ browser window.
 These values should probably be simply set in compile time (constants), but the way they are encapsulated offers
 a simple customization option. Changing these values in the constructor code feels somewhat better supported 
 in contrast to the other option, changing them directly in the closure:
-	$class->__init_bar( "&#x2591", 24, 11.66 );
+
+	$class->__init_bar( "&#x2591", 24, 11.66 );
 	$class->__init_window( 760, 450, 333, 105 );
-Some of the feedback related variables (__titlebar_text, __message_text) can be set through simple mutator 
+
+Some of the feedback related variables (__titlebar_text, __message_text) can be set through simple mutator 
 methods from your code.
 
 Returns a new B<ProgressBar> object.
@@ -256,7 +283,8 @@ Returns a new B<ProgressBar> object.
 =cut
 
 sub new {
-		my $class = shift;
+	
+	my $class = shift;
 
 	$class->__init_bar( "&#x2591", 24, 11.66 );
 	$class->__init_window( 760, 450, 333, 105, 5 );
@@ -317,7 +345,8 @@ sub set_message_text{
 	
 	return $self->{__message_text} eq $text ? 1:0;	
 	
-}
+}
+
 sub __update_progressbar{
 
 	my $self = shift;	
@@ -327,18 +356,22 @@ sub __update_progressbar{
 	my $bc_face = __get_bc_face();
 	
 	if ( defined $self->{__doc} ) {
-				$self->{__doc}->GetElementById($elements[0])->{InnerHtml} = $self->{__message_text};
+		
+		$self->{__doc}->GetElementById($elements[0])->{InnerHtml} = $self->{__message_text};
 
-		for my $cnt ( $self->{__current_step} .. $self->{__percent_complete} ) {
+		for my $cnt ( $self->{__current_step} .. $self->{__percent_complete} ) {
+
 			my $sum = int(( $cnt * $bc_num / 100 ) + 0.5 );
-						$self->{__progressbar_text} .= $bc_face if $sum > $self->{__checksum};
+			
+			$self->{__progressbar_text} .= $bc_face if $sum > $self->{__checksum};
 			$self->{__doc}->GetElementById($elements[1])->{InnerHtml} = $self->{__progressbar_text};
 			$self->{__doc}->GetElementById($elements[2])->{InnerHtml} = $cnt.$compl.$self->{__titlebar_text};			
 
 			$self->{__checksum} = $sum;
 			
 		}
-		$self->{__doc}->{Title} = $self->{__titlebar_text};
+
+		$self->{__doc}->{Title} = $self->{__titlebar_text};
 		$self->{__current_step} = $self->{__percent_complete} + 1; 
 		
 		sleep 1;
@@ -367,14 +400,18 @@ returns 0, so the method call can be tested. When testing this method call pleas
 be run from inside a processing loop. 
 
 =cut
-sub update{
+
+sub update{
 	
 	my ($self, $pc) = @_;
 	
-	my $pc_prev = $self->{__percent_complete};
+	my $pc_prev = $self->{__percent_complete};
+
 	$self->{__percent_complete} = $pc and $self->__update_progressbar() if $pc;
 	
-	return $self->{__percent_complete} > $pc_prev ? 1:0;}
+	return $self->{__percent_complete} > $pc_prev ? 1:0;
+
+}
 
 =pod
 
@@ -386,12 +423,14 @@ refreshed cycle by cycle from inside the loop.
 
 The method relies on a template (HTML skeleton), which is stored under the __DATA__ token at the end of the package.
 When the template is used, the width of the table, which holds the progress bar, is interpolated into the HTML code.
-The textual elements of the HTML page are updated through HTML DOM C<InnerHTML> property tags.
+The textual elements of the HTML page are updated through HTML DOM C<InnerHTML> property tags.
+
 Returns 1 if the browser object of the user interface is successful created, otherwise returns 0, so the method 
 call can be tested. 
 
 =cut
-sub show{
+
+sub show{
 
 	my $self = shift;
 	
@@ -408,8 +447,10 @@ call can be tested.
 		Left => __get_win_pos_left(),
 		Top  => __get_win_pos_top(),
 	);	
-		my %win_size = (
-		Width  => __get_win_size_width(),		Height => __get_win_size_height(),
+	
+	my %win_size = (
+		Width  => __get_win_size_width(),
+		Height => __get_win_size_height(),
 	);
 	
 	my %ie_args = (
@@ -421,13 +462,15 @@ call can be tested.
 		Menubar			=> 0,
 		Statusbar 		=> 0,
 	);
-	
+	
+
 	$self->{__IE} = Win32::OLE->new( 'InternetExplorer.Application' );
 	
 	foreach my $key ( keys %ie_args ) { 
 		$self->{__IE}->{$key} = $ie_args{$key};
 	}
-	if ( $win_pos{Left} )    { $self->{__IE}->{Left}   = $win_pos{Left};	}
+
+	if ( $win_pos{Left} )    { $self->{__IE}->{Left}   = $win_pos{Left};	}
 	if ( $win_pos{Top} )     { $self->{__IE}->{Top}    = $win_pos{Top};     }
 	if ( $win_size{Width} )  { $self->{__IE}->{Width}  = $win_size{Width};  }
 	if ( $win_size{Height} ) { $self->{__IE}->{Height} = $win_size{Height};	}
@@ -447,7 +490,8 @@ call can be tested.
 	# the $/ input record seperator is temporarily set to undef, so that the diamond operator 
 	# retrieves the entire template (the text after __DATA__ token) from the DATA filehandle
 	# until it reaches EOF. Then it returns text assigning it to a scalar. 
-		my $html = do { local $/; <DATA> }; 
+	
+	my $html = do { local $/; <DATA> }; 
 
 	my $template = HTML::Template->new(
 		scalarref         => \$html,
@@ -459,7 +503,9 @@ call can be tested.
 
 	$self->{__doc}->Write( $template->output() );
 	
-	return defined $self->{__IE} ? 1:0;}
+	return defined $self->{__IE} ? 1:0;
+
+}
 
 =pod
 
@@ -467,7 +513,8 @@ call can be tested.
 
 The C<close> object method lets you close the user interface of your ProgressBar object right after the 
 processing loop iterates your entire collection.
-Returns 1 if the browser object of the user interface previously existed and now it is successfully closed, 
+
+Returns 1 if the browser object of the user interface previously existed and now it is successfully closed, 
 otherwise returns 0, so the method call can be tested. 
 
 =cut
@@ -476,7 +523,8 @@ sub close{
 	
 	my $self = shift;
 	
-	my $IE = defined $self->{__IE};
+	my $IE = defined $self->{__IE};
+
 	undef $self->{__doc};
 	$self->{__IE}->Quit;
         undef $self->{__IE};
@@ -495,11 +543,12 @@ cgaspar@finsock.com
 
 =head1 AUTHOR
 
-Copyright 2016 Csaba Gaspar.
+Copyright 2016-2019 Csaba Gaspar.
 
 =cut
 
-__DATA__
+
+__DATA__
 
 <HTML>
   <BODY SCROLL='no' STYLE='margin:<TMPL_VAR NAME=MARGIN>px'>
