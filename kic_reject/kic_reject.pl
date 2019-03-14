@@ -4,9 +4,10 @@
 	Version 1.1
 	
 	Script name:	kic_rejection.pl
-	Script purpose:	Automating Records Management document rejection process in a Kofax Import Connector related imaging workflow (electronic AP invoices)
-	Author: 		Csaba Gaspar
-	Created: 		April 10, 2017
+	Script purpose:	Automating Records Management document rejection process 
+			in a Kofax Import Connector related imaging workflow (electronic AP invoices)
+	Author: 	Csaba Gaspar
+	Created: 	April 10, 2017
 	Last Modified:  June 8, 2018
 
 	History:
@@ -121,13 +122,13 @@ my %sysops;
 	getopts( 'slitrach', \%Opt );
 	if ( $Opt{s} or $Opt{l} or $Opt{i} or $Opt{t} or $Opt{r} or $Opt{a} or $Opt{c} or $Opt{h} ) {
 		$msg = create_shortcut() if $Opt{s};		# Creates a shortcut to the application	
-		$msg = create_l4p() if $Opt{l};				# Creates a log4perl config file with default log settings
-		$msg = create_ini() if $Opt{i};				# Creates an ini file with default values
+		$msg = create_l4p() if $Opt{l};			# Creates a log4perl config file with default log settings
+		$msg = create_ini() if $Opt{i};			# Creates an ini file with default values
 		$msg = create_templates() if $Opt{t};		# Creates default template files for the HTML based dialogue windows
-		$msg = create_readme() if $Opt{r};			# Creates a README file		
-		$msg = create_all() if $Opt{a};				# Creates all of the above at once
-		$msg = create_icon() if $Opt{c};			# Creates an individual icon which is compiled into the executable
-		$msg = help() if $Opt{h};					# Generate command line help information
+		$msg = create_readme() if $Opt{r};		# Creates a README file		
+		$msg = create_all() if $Opt{a};			# Creates all of the above at once
+		$msg = create_icon() if $Opt{c};		# Creates an individual icon which is compiled into the executable
+		$msg = help() if $Opt{h};			# Generate command line help information
 		inform( $msg ) if defined $msg and $msg ne "";
 		exit;
 	}
@@ -572,10 +573,10 @@ sub send_mail {
     my $namespace = $outlook->GetNameSpace("MAPI") or abort( "Could not create a new Outlook namespace!" );
 	my $message = $outlook->CreateItem(olMailItem) or abort( "Could not create a new Outlook message!" );;
 	   $message->{To} = $email_params->{mail_info}{To};
-       $message->{Cc} = $email_params->{mail_info}{Cc};
+       	   $message->{Cc} = $email_params->{mail_info}{Cc};
 	   $message->{Bcc} = list_sysops();
-       $message->{Subject} = "RM REJECTION - $email_params->{mail_info}{Subject}";
-       $message->{HTMLBody} = $email_params->{mail_info}{Body}.$email_params->{signature};
+           $message->{Subject} = "RM REJECTION - $email_params->{mail_info}{Subject}";
+           $message->{HTMLBody} = $email_params->{mail_info}{Body}.$email_params->{signature};
 	   $message->{Attachments}->Add($email_params->{eml}, olByValue, 1, basename($email_params->{eml}));
 	   $message->Display() if $DISP_MSG eq "TRUE";
 	   $message->Send() if $SEND_MSG eq "TRUE"; 
